@@ -47,8 +47,8 @@ namespace BLL.Services
         {
             var webClient = new WebClient();
             var myFile = new MyFile();
-
             webClient.OpenRead(link);
+
             string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
 
             myFile.FileName = new ContentDisposition(header_contentDisposition).FileName;
@@ -100,7 +100,10 @@ namespace BLL.Services
             }
             void webClient_DownloadFileCompleted(object? sender, AsyncCompletedEventArgs e)
             {
-                DeleteMyFile(myFile.Id);
+                lock (this)
+                {
+                    DeleteMyFile(myFile.Id);
+                }
                 if (IsPause)
                 {
                     autoResetEvent.WaitOne();

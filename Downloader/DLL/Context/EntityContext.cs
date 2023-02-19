@@ -12,7 +12,7 @@ namespace DLL.Context
     {
         public EntityContext(DbContextOptions<EntityContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
